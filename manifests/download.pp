@@ -36,9 +36,9 @@ define archive::download (
   $allow_insecure = false,
   $username       = undef,
   $password       = undef ) {
-    
-  if ( $username == undef && $password == undef ) {
-    $basic_auth = ""
+
+  if ($username == undef and $password == undef) {
+    $basic_auth = ''
   } else {
     $basic_auth = "--user ${username}:${password}"
   }
