@@ -1,7 +1,7 @@
-Archive Puppet Module
-====================
+Puppet Archive Module
+=====================
 
-[![Build Status](https://secure.travis-ci.org/smarchive/puppet-archive.png)](http://travis-ci.org/smarchive/puppet-archive)
+[![Build Status](https://secure.travis-ci.org/gini/puppet-archive.png)](http://travis-ci.org/gini/puppet-archive)
 
 Overview
 --------
@@ -15,6 +15,7 @@ Supported archive types are:
 - `tar.xz`, `txz`
 - `zip`
 
+
 Usage
 -----
 
@@ -26,19 +27,35 @@ Example:
       target => '/opt',
     }
 
-License
--------
 
-Puppet module originally from [camptocamp/puppet-archive](https://github.com/camptocamp/puppet-archive).
+Supported Platforms
+-------------------
 
-All changes copyright (c) 2012, 2013 smarchive GmbH
+The module has been tested on the following operating systems. Testing and patches for other platforms are welcome.
 
-This script is licensed under the Apache License, Version 2.0.
-
-See http://www.apache.org/licenses/LICENSE-2.0.html for the full license text.
+* Debian Linux 7.0 (Wheezy)
 
 
 Support
 -------
 
-Please log tickets and issues at our [project site](https://github.com/smarchive/puppet-archive/issues).
+Please create bug reports and feature requests in [GitHub issues](https://github.com/gini/puppet-archive/issues).
+
+
+License
+-------
+
+Puppet module originally from [camptocamp/puppet-archive](https://github.com/camptocamp/puppet-archive).
+
+All changes copyright (c) 2012-2013 smarchive GmbH, 2013 Gini GmbH
+
+This script is licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
+
+
+Contributors
+------------
+
+* Marc Remy (mremy)
+* Marc Fournier (mfournier)
+* Cedric Jeanneret (cjeanneret)
+* Zijad Purkovic (zajk)
