@@ -17,6 +17,7 @@
 # - *$allow_insecure: Default value false
 # - *$username: set basic auth username
 # - *$password: set basic auth password
+# - *$proxy: HTTP proxy in the form of "hostname:port"; e.g. "myproxy:8080"
 #
 # Example usage:
 #
@@ -47,7 +48,8 @@ define archive (
   $src_target     = '/usr/src',
   $allow_insecure = false,
   $username = undef,
-  $password = undef ){
+  $password = undef,
+  $proxy          = undef ){
 
   archive::download {"${name}.${extension}":
     ensure         => $ensure,
@@ -60,7 +62,8 @@ define archive (
     src_target     => $src_target,
     allow_insecure => $allow_insecure,
     username       => $username,
-    password       => $password
+    password       => $password,
+    proxy          => $proxy
   }
 
   archive::extract { $name:

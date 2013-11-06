@@ -11,6 +11,7 @@
 # - *$timeout: Default value 120.
 # - *$src_target: Default value '/usr/src'.
 # - *$allow_insecure: Default value false.
+# - *$proxy: HTTP proxy in the form of "hostname:port"
 #
 # Example usage:
 
@@ -23,6 +24,7 @@
 #     ensure => present,
 #     digest_string => 'f9eafa9bfd620324d1270ae8f09a8c89',
 #     url => 'http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.26/bin/apache-tomcat-6.0.26.tar.gz',
+#     proxy => 'myproxy.example.com:8080',
 #   }
 define archive::download (
   $url,
@@ -35,12 +37,19 @@ define archive::download (
   $src_target     = '/usr/src',
   $allow_insecure = false,
   $username       = undef,
-  $password       = undef ) {
+  $password       = undef,
+  $proxy          = undef ) {
 
   if ($username == undef and $password == undef) {
     $basic_auth = ''
   } else {
     $basic_auth = "--user ${username}:${password}"
+  }
+
+  if ($proxy == undef) {
+    $proxy_arg = ''
+  } else {
+    $proxy_arg = "--proxy ${proxy}"
   }
 
   Exec {
@@ -81,7 +90,7 @@ define archive::download (
             }
 
             exec {"download digest of archive ${name}":
-              command => "curl ${basic_auth} ${insecure_arg} -L -s -o ${src_target}/${name}.${digest_type} ${digest_src}",
+              command => "curl ${basic_auth} ${insecure_arg} ${proxy_arg} -L -s -o ${src_target}/${name}.${digest_type} ${digest_src}",
               creates => "${src_target}/${name}.${digest_type}",
               timeout => $timeout,
               notify  => Exec["download archive ${name} and check sum"],
@@ -137,7 +146,7 @@ define archive::download (
       }
 
       exec {"download archive ${name} and check sum":
-        command     => "curl ${basic_auth} -L -s ${insecure_arg} -o ${src_target}/${name} ${url}",
+        command     => "curl ${basic_auth} -L -s ${insecure_arg} ${proxy_arg} -o ${src_target}/${name} ${url}",
         creates     => "${src_target}/${name}",
         logoutput   => true,
         timeout     => $timeout,
