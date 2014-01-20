@@ -19,6 +19,7 @@
 # - *$username: set basic auth username
 # - *$password: set basic auth password
 # - *$proxy: HTTP proxy in the form of "hostname:port"; e.g. "myproxy:8080"
+# - *$dependency_class: Puppet class which installs the required programs (curl, tar, unzip)
 #
 # Example usage:
 #
@@ -51,7 +52,8 @@ define archive (
   $strip_components = 0,
   $username         = undef,
   $password         = undef,
-  $proxy            = undef ){
+  $proxy            = undef,
+  $dependency_class = Class['archive::prerequisites']){
 
   archive::download {"${name}.${extension}":
     ensure         => $ensure,
@@ -65,7 +67,8 @@ define archive (
     allow_insecure => $allow_insecure,
     username       => $username,
     password       => $password,
-    proxy          => $proxy
+    proxy          => $proxy,
+    require        => $dependency_class,
   }
 
   archive::extract { $name:
