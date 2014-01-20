@@ -12,6 +12,7 @@
 # - *$src_target: Default value '/usr/src'.
 # - *$allow_insecure: Default value false.
 # - *$proxy: HTTP proxy in the form of "hostname:port"
+# - *$exec_path: Path being searched for all Exec resources, default: ['/usr/local/bin', '/usr/bin', '/bin']
 #
 # Example usage:
 
@@ -38,7 +39,8 @@ define archive::download (
   $allow_insecure = false,
   $username       = undef,
   $password       = undef,
-  $proxy          = undef ) {
+  $proxy          = undef,
+  $exec_path      = ['/usr/local/bin', '/usr/bin', '/bin']) {
 
   if ($username == undef and $password == undef) {
     $basic_auth = ''
@@ -50,10 +52,6 @@ define archive::download (
     $proxy_arg = ''
   } else {
     $proxy_arg = "--proxy ${proxy}"
-  }
-
-  Exec {
-    path => [ '/usr/local/bin', '/usr/bin', '/bin', ],
   }
 
   $insecure_arg = $allow_insecure ? {
@@ -91,6 +89,7 @@ define archive::download (
 
             exec {"download digest of archive ${name}":
               command => "curl ${basic_auth} ${insecure_arg} ${proxy_arg} -L -s -o ${src_target}/${name}.${digest_type} ${digest_src}",
+              path    => $exec_path,
               creates => "${src_target}/${name}.${digest_type}",
               timeout => $timeout,
               notify  => Exec["download archive ${name} and check sum"],
@@ -147,6 +146,7 @@ define archive::download (
 
       exec {"download archive ${name} and check sum":
         command     => "curl ${basic_auth} -L -s ${insecure_arg} ${proxy_arg} -o ${src_target}/${name} ${url}",
+        path        => $exec_path,
         creates     => "${src_target}/${name}",
         logoutput   => true,
         timeout     => $timeout,
@@ -157,6 +157,7 @@ define archive::download (
 
       exec {"rm-on-error-${name}":
         command     => "rm -f ${src_target}/${name} ${src_target}/${name}.${digest_type} && exit 1",
+        path        => $exec_path,
         unless      => $checksum_cmd,
         cwd         => $src_target,
         refreshonly => true,

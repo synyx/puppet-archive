@@ -20,6 +20,7 @@
 # - *$password: set basic auth password
 # - *$proxy: HTTP proxy in the form of "hostname:port"; e.g. "myproxy:8080"
 # - *$dependency_class: Puppet class which installs the required programs (curl, tar, unzip)
+# - *$exec_path: Path being searched for all Exec resources, default: ['/usr/local/bin', '/usr/bin', '/bin']
 #
 # Example usage:
 #
@@ -53,7 +54,8 @@ define archive (
   $username         = undef,
   $password         = undef,
   $proxy            = undef,
-  $dependency_class = Class['archive::prerequisites']){
+  $dependency_class = Class['archive::prerequisites'],
+  $exec_path        = ['/usr/local/bin', '/usr/bin', '/bin']) {
 
   archive::download {"${name}.${extension}":
     ensure         => $ensure,
@@ -69,6 +71,7 @@ define archive (
     password       => $password,
     proxy          => $proxy,
     require        => $dependency_class,
+    exec_path      => $exec_path,
   }
 
   archive::extract { $name:
@@ -79,6 +82,7 @@ define archive (
     extension        => $extension,
     timeout          => $timeout,
     strip_components => $strip_components,
+    exec_path        => $exec_path,
     require          => Archive::Download["${name}.${extension}"]
   }
 }
