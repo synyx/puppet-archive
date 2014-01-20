@@ -28,11 +28,12 @@
 # the root directory use the commands 'tar tf archive.tar.gz' or 'unzip -l archive.zip'
 define archive::extract (
   $target,
-  $ensure     = present,
-  $src_target = '/usr/src',
-  $root_dir   = '',
-  $extension  = 'tar.gz',
-  $timeout    = 120) {
+  $ensure           = present,
+  $src_target       = '/usr/src',
+  $root_dir         = '',
+  $extension        = 'tar.gz',
+  $timeout          = 120,
+  $strip_components = 0) {
 
   Exec {
     path => [ '/usr/local/bin', '/usr/bin', '/bin', ],
@@ -48,9 +49,9 @@ define archive::extract (
     present: {
 
       $extract_zip    = "unzip -o ${src_target}/${name}.${extension} -d ${target}"
-      $extract_targz  = "tar --no-same-owner --no-same-permissions -xzf ${src_target}/${name}.${extension} -C ${target}"
-      $extract_tarxz  = "tar --no-same-owner --no-same-permissions -xJf ${src_target}/${name}.${extension} -C ${target}"
-      $extract_tarbz2 = "tar --no-same-owner --no-same-permissions -xjf ${src_target}/${name}.${extension} -C ${target}"
+      $extract_targz  = "tar --no-same-owner --no-same-permissions --strip-components=${strip_components} -xzf ${src_target}/${name}.${extension} -C ${target}"
+      $extract_tarxz  = "tar --no-same-owner --no-same-permissions --strip-components=${strip_components} -xJf ${src_target}/${name}.${extension} -C ${target}"
+      $extract_tarbz2 = "tar --no-same-owner --no-same-permissions --strip-components=${strip_components} -xjf ${src_target}/${name}.${extension} -C ${target}"
 
       $unpack_command = $extension ? {
         'zip'                => "mkdir -p ${target} && ${extract_zip}",
