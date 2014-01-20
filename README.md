@@ -47,7 +47,7 @@ License
 
 Puppet module originally from [camptocamp/puppet-archive](https://github.com/camptocamp/puppet-archive).
 
-All changes copyright (c) 2012-2013 smarchive GmbH, 2013 Gini GmbH
+All changes copyright (c) 2012-2013 smarchive GmbH, 2013-2014 Gini GmbH
 
 This script is licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
 
@@ -59,3 +59,5 @@ Contributors
 * Marc Fournier (mfournier)
 * Cedric Jeanneret (cjeanneret)
 * Zijad Purkovic (zajk)
+* Martin Konrad (mark0n)
+* Brendan Murtagh (bmurt)
