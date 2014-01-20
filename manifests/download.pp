@@ -59,10 +59,6 @@ define archive::download (
     default => '',
   }
 
-  if !defined(Package['curl']) {
-    package{'curl': ensure => present }
-  }
-
   case $checksum {
     true : {
       case $digest_type {
