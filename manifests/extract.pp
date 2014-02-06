@@ -46,16 +46,16 @@ define archive::extract (
   case $ensure {
     present: {
 
-      $extract_zip    = "unzip -o ${src_target}/${name}.${extension} -d ${target}"
-      $extract_targz  = "tar --no-same-owner --no-same-permissions --strip-components=${strip_components} -xzf ${src_target}/${name}.${extension} -C ${target}"
-      $extract_tarxz  = "tar --no-same-owner --no-same-permissions --strip-components=${strip_components} -xJf ${src_target}/${name}.${extension} -C ${target}"
-      $extract_tarbz2 = "tar --no-same-owner --no-same-permissions --strip-components=${strip_components} -xjf ${src_target}/${name}.${extension} -C ${target}"
+      $extract_zip    = "unzip -o ${src_target}/${name}.${extension} -d ${extract_dir}"
+      $extract_targz  = "tar --no-same-owner --no-same-permissions --strip-components=${strip_components} -xzf ${src_target}/${name}.${extension} -C ${extract_dir}"
+      $extract_tarxz  = "tar --no-same-owner --no-same-permissions --strip-components=${strip_components} -xJf ${src_target}/${name}.${extension} -C ${extract_dir}"
+      $extract_tarbz2 = "tar --no-same-owner --no-same-permissions --strip-components=${strip_components} -xjf ${src_target}/${name}.${extension} -C ${extract_dir}"
 
       $unpack_command = $extension ? {
-        'zip'                => "mkdir -p ${target} && ${extract_zip}",
-        /(tar.gz|tgz)/       => "mkdir -p ${target} && ${extract_targz}",
-        /(tar.xz|txz)/       => "mkdir -p ${target} && ${extract_tarxz}",
-        /(tar.bz2|tbz|tbz2)/ => "mkdir -p ${target} && ${extract_tarbz2}",
+        'zip'                => "mkdir -p ${extract_dir} && ${extract_zip}",
+        /(tar.gz|tgz)/       => "mkdir -p ${extract_dir} && ${extract_targz}",
+        /(tar.xz|txz)/       => "mkdir -p ${extract_dir} && ${extract_tarxz}",
+        /(tar.bz2|tbz|tbz2)/ => "mkdir -p ${extract_dir} && ${extract_tarbz2}",
         default              => 'UNKNOWN',
       }
 
