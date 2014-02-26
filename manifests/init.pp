@@ -15,6 +15,7 @@
 # - *$extension: Default value ".tar.gz"
 # - *$timeout: Default value 120
 # - *$allow_insecure: Default value false
+# - *$allow_redirects: Default value true
 # - *$strip_components: Strip the top most n directories from each file name; default value 0
 # - *$username: set basic auth username
 # - *$password: set basic auth password
@@ -50,6 +51,7 @@ define archive (
   $extension        = 'tar.gz',
   $src_target       = '/usr/src',
   $allow_insecure   = false,
+  $allow_redirects  = true,
   $strip_components = 0,
   $username         = undef,
   $password         = undef,
@@ -58,20 +60,21 @@ define archive (
   $exec_path        = ['/usr/local/bin', '/usr/bin', '/bin']) {
 
   archive::download {"${name}.${extension}":
-    ensure         => $ensure,
-    url            => $url,
-    checksum       => $checksum,
-    digest_url     => $digest_url,
-    digest_string  => $digest_string,
-    digest_type    => $digest_type,
-    timeout        => $timeout,
-    src_target     => $src_target,
-    allow_insecure => $allow_insecure,
-    username       => $username,
-    password       => $password,
-    proxy          => $proxy,
-    require        => $dependency_class,
-    exec_path      => $exec_path,
+    ensure          => $ensure,
+    url             => $url,
+    checksum        => $checksum,
+    digest_url      => $digest_url,
+    digest_string   => $digest_string,
+    digest_type     => $digest_type,
+    timeout         => $timeout,
+    src_target      => $src_target,
+    allow_insecure  => $allow_insecure,
+    allow_redirects => $allow_redirects,
+    username        => $username,
+    password        => $password,
+    proxy           => $proxy,
+    require         => $dependency_class,
+    exec_path       => $exec_path,
   }
 
   archive::extract { $name:
