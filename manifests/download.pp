@@ -11,11 +11,12 @@
 # - *$timeout: Default value 120.
 # - *$src_target: Default value '/usr/src'.
 # - *$allow_insecure: Default value false.
+# - *$allow_redirects: Default value true
 # - *$proxy: HTTP proxy in the form of "hostname:port"
 # - *$exec_path: Path being searched for all Exec resources, default: ['/usr/local/bin', '/usr/bin', '/bin']
 #
 # Example usage:
-
+#
 #   archive::download {'apache-tomcat-6.0.26.tar.gz':
 #     ensure => present,
 #     url => 'http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.26/bin/apache-tomcat-6.0.26.tar.gz',
@@ -29,18 +30,19 @@
 #   }
 define archive::download (
   $url,
-  $ensure         = present,
-  $checksum       = true,
-  $digest_url     = '',
-  $digest_string  = '',
-  $digest_type    = 'md5',
-  $timeout        = 120,
-  $src_target     = '/usr/src',
-  $allow_insecure = false,
-  $username       = undef,
-  $password       = undef,
-  $proxy          = undef,
-  $exec_path      = ['/usr/local/bin', '/usr/bin', '/bin']) {
+  $ensure          = present,
+  $checksum        = true,
+  $digest_url      = '',
+  $digest_string   = '',
+  $digest_type     = 'md5',
+  $timeout         = 120,
+  $src_target      = '/usr/src',
+  $allow_insecure  = false,
+  $allow_redirects = true,
+  $username        = undef,
+  $password        = undef,
+  $proxy           = undef,
+  $exec_path       = ['/usr/local/bin', '/usr/bin', '/bin']) {
 
   if ($username == undef and $password == undef) {
     $basic_auth = ''
@@ -56,6 +58,11 @@ define archive::download (
 
   $insecure_arg = $allow_insecure ? {
     true    => '-k',
+    default => '',
+  }
+
+  $redirects_arg = $allow_redirects ? {
+    true    => '-L',
     default => '',
   }
 
@@ -84,7 +91,7 @@ define archive::download (
             }
 
             exec {"download digest of archive ${name}":
-              command => "curl ${basic_auth} ${insecure_arg} ${proxy_arg} -L -s -o ${src_target}/${name}.${digest_type} ${digest_src}",
+              command => "curl ${basic_auth} ${insecure_arg} ${redirects_arg} ${proxy_arg} -s -o ${src_target}/${name}.${digest_type} ${digest_src}",
               path    => $exec_path,
               creates => "${src_target}/${name}.${digest_type}",
               timeout => $timeout,
@@ -141,7 +148,7 @@ define archive::download (
       }
 
       exec {"download archive ${name} and check sum":
-        command     => "curl ${basic_auth} -L -s ${insecure_arg} ${proxy_arg} -o ${src_target}/${name} ${url}",
+        command     => "curl ${basic_auth} -s ${insecure_arg} ${redirects_arg} ${proxy_arg} -o ${src_target}/${name} ${url}",
         path        => $exec_path,
         creates     => "${src_target}/${name}",
         logoutput   => true,
