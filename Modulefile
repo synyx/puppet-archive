@@ -6,3 +6,5 @@ project_page 'https://github.com/gini/puppet-archive'
 source       'https://github.com/gini/puppet-archive'
 summary      'Puppet module to download and extract tar and zip archives'
 description  'This module downloads archives (tar.{gz,bz2,xz} and zip) using curl and extracts them to a given directory.'
+
+dependency 'puppetlabs/stdlib', '>= 2.6.0'
