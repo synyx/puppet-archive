@@ -10,6 +10,7 @@ Puppet module to download and extract tar and zip archives based on [camptocamp/
 
 Supported archive types are:
 
+- `tar`
 - `tar.gz`, `tgz`
 - `tar.bz2`, `tbz2`
 - `tar.xz`, `txz`
@@ -61,3 +62,4 @@ Contributors
 * Zijad Purkovic (zajk)
 * Martin Konrad (mark0n)
 * Brendan Murtagh (bmurt)
+* Nicolas Truyens (lavaburn)
