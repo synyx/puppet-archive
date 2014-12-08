@@ -131,7 +131,11 @@ define archive::download (
         }
       }
     }
-    false :  { notice('No checksum for this archive') }
+    false :  {
+      notice('No checksum for this archive')
+      # Don't run rm-on-error - return code 0
+      $checksum_cmd = 'test 0'
+    }
     default: { fail("Unknown checksum value: '${checksum}'") }
   }
 
