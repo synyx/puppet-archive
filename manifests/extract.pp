@@ -27,7 +27,7 @@
 # The parameter *$root_dir* must be used if the root directory of the archive
 # is different from the name of the archive *$name*. To extract the name of
 # the root directory use the commands 'tar tf archive.tar.gz' or 'unzip -l archive.zip'
-define archive::extract (
+define gini_archive::extract (
   $target,
   $ensure           = present,
   $src_target       = '/usr/src',

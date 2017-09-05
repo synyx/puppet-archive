@@ -38,7 +38,7 @@
 #     password => "example",
 #     target   => "/opt",
 #   }
-define archive (
+define gini_archive (
   $url,
   $target,
   $ensure           = present,

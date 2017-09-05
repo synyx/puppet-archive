@@ -6,7 +6,7 @@
 #
 # None
 #
-class archive::prerequisites {
+class gini_archive::prerequisites {
 
   # list of packages needed for download and extraction
   $packages = [ 'curl', 'unzip', 'tar', ]

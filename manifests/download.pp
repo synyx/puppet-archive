@@ -28,7 +28,7 @@
 #     url => 'http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.26/bin/apache-tomcat-6.0.26.tar.gz',
 #     proxy => 'myproxy.example.com:8080',
 #   }
-define archive::download (
+define gini_archive::download (
   $url,
   $ensure          = present,
   $checksum        = true,
